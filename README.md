@@ -1,5 +1,7 @@
 # Dida365 (TickTick) MCP Server
 
+[![smithery badge](https://smithery.ai/badge/@iamjzx/dida)](https://smithery.ai/server/@iamjzx/dida)
+
 This is a Model Context Protocol (MCP) server that provides tools for interacting with the Dida365 (TickTick) API. It allows AI assistants to manage tasks and projects in Dida365 after user authorization.
 
 ## Features
