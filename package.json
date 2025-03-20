@@ -2,10 +2,10 @@
   "name": "my-mcp-server",
   "version": "1.0.0",
   "description": "A simple MCP server using HTTP transport",
-  "main": "index.js",
+  "main": "src/tick.js",
   "type": "module",
   "scripts": {
-    "start": "node index.js"
+    "start": "node src/tick.js"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.7.0",
