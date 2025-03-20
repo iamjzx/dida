@@ -65,16 +65,33 @@ const server = new McpServer({
 });
 
 
-const baseUrl =  "https://api.dida365.com/open/v1";//"http://localhost:3999";
+const baseUrl =  "https://api.dida365.com/open/v1";
+
 
 const clientInfo = {
-    clientId: "p48Trkl5E05hanIEhb",
-    clientSecret: "f&5(npDI1A6Kh!NDh%9)$7j+mzsU1L+5",
-    redirectUri: "http://localhost:4000/oauth/callback",//"http://106.75.247.14:3999/oauth/callback",
+    clientId: null,
+    clientSecret: null,
+    redirectUri: "",
     scope:"tasks:read tasks:write",
     grantType: 'authorization_code',
-    scope: "tasks:read tasks:write",//process.env.SCOPE,
+    scope: "tasks:read tasks:write",
 }
+
+let SEVER_PORT = 4000;
+
+function getArgs() {
+  const args = process.argv.slice(2);
+  if(args.length < 2) {
+    logger.error('CLIENT_ID or CLIENT_SECRET is not set');
+    process.exit(1);
+  }
+  clientInfo.clientId = args[0];
+  clientInfo.clientSecret = args[1];
+  args.length > 2 ? SEVER_PORT = args[2] : 4000;
+  clientInfo.redirectUri = `http://localhost:${SEVER_PORT}/oauth/callback`;
+}
+
+getArgs();
 
 // 存储访问令牌
 let access = {
@@ -570,8 +587,8 @@ app.get('/oauth/callback', async (req, res) => {
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.listen(4000, () => {
-  logger.info('OAuth callback server listening on port 4000');
+app.listen(SEVER_PORT, () => {
+  logger.info(`OAuth callback server listening on port ${SEVER_PORT}`);
 });
 
 // Start receiving messages on stdin and sending messages on stdout
