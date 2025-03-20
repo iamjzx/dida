@@ -69,8 +69,8 @@ const baseUrl =  "https://api.dida365.com/open/v1";
 
 
 const clientInfo = {
-    clientId: null,
-    clientSecret: null,
+    clientId: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
     redirectUri: "",
     scope:"tasks:read tasks:write",
     grantType: 'authorization_code',
