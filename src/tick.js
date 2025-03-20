@@ -77,21 +77,18 @@ const clientInfo = {
     scope: "tasks:read tasks:write",
 }
 
-let SEVER_PORT = 4000;
-
-function getArgs() {
-  const args = process.argv.slice(2);
-  if(args.length < 2) {
-    logger.error('CLIENT_ID or CLIENT_SECRET is not set');
-    process.exit(1);
-  }
-  clientInfo.clientId = args[0];
-  clientInfo.clientSecret = args[1];
-  args.length > 2 ? SEVER_PORT = args[2] : 4000;
-  clientInfo.redirectUri = `http://localhost:${SEVER_PORT}/oauth/callback`;
-}
-
-getArgs();
+let SEVER_PORT = parseInt(process.env.SERVER_PORT || '4000', 10);
+   
+   function initializeClientInfo() {
+     if (!clientInfo.clientId || !clientInfo.clientSecret) {
+       logger.error('CLIENT_ID or CLIENT_SECRET is not set');
+       process.exit(1);
+     }
+     clientInfo.redirectUri = `http://localhost:${SEVER_PORT}/oauth/callback`;
+   }
+   
+   // 调用初始化函数
+   initializeClientInfo();
 
 // 存储访问令牌
 let access = {
