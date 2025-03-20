@@ -1,28 +1,12 @@
-# Smithery.ai configuration
+# Smithery configuration file: https://smithery.ai/docs/config#smitheryyaml
+
 startCommand:
   type: stdio
   configSchema:
     # JSON Schema defining the configuration options for the MCP.
-    type: object
-    properties:
-      clientId:
-        type: string
-        title: Client ID
-        description: The Client ID from your Dida365 (TickTick) developer application
-      clientSecret:
-        type: string
-        title: Client Secret
-        description: The Client Secret from your Dida365 (TickTick) developer application
-      port:
-        type: integer
-        default: 4000
-        title: Server Port
-        description: The port on which the server will run (default is 4000)
-    required:
-      - clientId
-      - clientSecret
+    {}
   commandFunction:
-    # A function that produces the CLI command to start the MCP on stdio.
+    # A JS function that produces the CLI command based on the given config to start the MCP on stdio.
     |-
     (config) => ({
        "command": "node",
@@ -33,55 +17,3 @@ startCommand:
          "SERVER_PORT": String(config.port || 4000)
        }
      })
-
-# Installation commands for different clients
-installCommands:
-  # Command line installation
-  cli:
-    instructions: |
-      To use this MCP server, you need to have Node.js installed.
-      
-      Run the following command to start the server with your Dida365 credentials:
-      
-      ```bash
-      npx -y @smithery/cli@latest run @iamjzx/dida --client cursor --config '{"clientId":"$clientId","clientSecret":"$clientSecret","port":"$port"}'
-      ```
-      
-      Make sure to replace the values with your actual Dida365 API credentials.
-      
-      You can create a Dida365 application at https://developer.dida365.com/manage to get your client ID and client secret.
-    
-  # Claude Desktop installation
-  claude:
-    instructions: |
-      1. Open Claude Desktop and go to Settings > Developer
-      2. Enable Developer Mode
-      3. Click on "Edit Config" to open your claude_desktop_config.json
-      4. Add the following configuration to the "mcpServers" section:
-      
-      ```json
-      "dida365": {
-        "command": "npx",
-        "args": ["-y", "@smithery/cli@latest", "run", "@iamjzx/dida"],
-        "env": {
-          "CLIENT_ID": "$clientId",
-          "CLIENT_SECRET": "$clientSecret",
-          "SERVER_PORT": "$port"
-        }
-      }
-      ```
-      
-      5. Save the file and restart Claude Desktop
-      
-      Make sure to replace $clientId and $clientSecret with your actual Dida365 API credentials.
-  
-  # Cursor installation
-  cursor:
-    instructions: |
-      Add the Dida365 MCP server to Cursor by running:
-      
-      ```bash
-      npx -y @smithery/cli@latest run @iamjzx/dida --client cursor --config '{"clientId":"$clientId","clientSecret":"$clientSecret","port":"$port"}'
-      ```
-      
-      Make sure to replace $clientId and $clientSecret with your actual Dida365 API credentials from https://developer.dida365.com/manage
