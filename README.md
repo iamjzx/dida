@@ -6,10 +6,10 @@ This is a Model Context Protocol (MCP) server that provides tools for interactin
 
 - User authentication with Dida365
 - Get all projects (lists)
-- Get tasks from a specific project or all tasks
+- Get tasks from collection box
 - Create new tasks with various parameters
-- Update existing tasks
-- Delete tasks
+- Update existing tasks in collection box
+- Delete tasks in collection box
 - Create new projects
 
 ## Prerequisites
@@ -18,22 +18,9 @@ This is a Model Context Protocol (MCP) server that provides tools for interactin
 - npm or yarn
 - Dida365 (TickTick) account
 
-## Installation
+## We recommend that you clone the repository and run it locally:
 
-### Option 1: Using Smithery CLI (Recommended)
-
-You can install the Dida365 MCP server using Smithery CLI:
-
-```bash
-npx -y @smithery/cli@latest install @iamjzx/dida
-```
-
-During installation, you'll be prompted to enter:
-- Your Dida365 Client ID
-- Your Dida365 Client Secret
-- Server port (defaults to 4000)
-
-### Option 2: Direct Installation
+### Installation
 
 1. Clone this repository
 2. Install dependencies:
@@ -42,24 +29,36 @@ During installation, you'll be prompted to enter:
 npm install
 ```
 
-## Usage
+### Usage
 
-### Prerequisites
+#### Prerequisites
 
-1. Create your Dida365 (TickTick) app in https://developer.dida365.com/manage
+1. Open https://developer.dida365.com/manage and click "New App" to create your Dida365 (TickTick) app.
 2. Click "Edit" app and configure the OAuth redirect URL (e.g., http://localhost:4000/oauth/callback)
-   - The port in the URL should match the port you'll use when running the server
+   - The port in the URL should match the port you'll use when running the server(We use port 4000 by default)
 3. Get your Client ID and Client Secret
+4. Enter your Client ID and Client Secret in dida/.env file, you can also change the port of the server(4000 by default).
 
-### Setup for Different Clients
+#### Setup for Different Clients
 
-#### Cursor
+##### Cursor
 
-```bash
-npx -y @smithery/cli@latest run @iamjzx/dida --client cursor --config '{"clientId":"YOUR_CLIENT_ID","clientSecret":"YOUR_CLIENT_SECRET","port":"4000"}'
+1. Open Cursor and go to Settings > MCP
+2. Click on "Add new global MCP server"
+3. Add the follwing configuration to mcp.json:
+
+```json
+"dida365": {
+  "command": "node",
+  "args": [
+    "your repository path/dida/src/tick.js"
+  ]
+}
 ```
 
-#### Claude Desktop
+4. Save the file and enable the mcp.
+
+##### Claude Desktop
 
 1. Open Claude Desktop and go to Settings > Developer
 2. Enable Developer Mode
@@ -68,124 +67,24 @@ npx -y @smithery/cli@latest run @iamjzx/dida --client cursor --config '{"clientI
 
 ```json
 "dida365": {
-  "command": "npx",
-  "args": ["-y", "@smithery/cli@latest", "run", "@iamjzx/dida"],
-  "env": {
-    "CLIENT_ID": "YOUR_CLIENT_ID",
-    "CLIENT_SECRET": "YOUR_CLIENT_SECRET",
-    "SERVER_PORT": "4000"
-  }
+  "command": "node",
+  "args": [
+    "your repository path/dida/src/tick.js"
+  ]
 }
 ```
 
 5. Save the file and restart Claude Desktop
 
-#### Running Directly (Advanced)
+## Logs
 
-If you've cloned the repository and installed dependencies, you can run the server directly:
+You can view the service runtime logs in the `src/server.log` file.
 
-```bash
-# Set required environment variables
-export CLIENT_ID=YOUR_CLIENT_ID
-export CLIENT_SECRET=YOUR_CLIENT_SECRET
-export SERVER_PORT=4000 # Optional, defaults to 4000
+## Unfinished
 
-# Start the server
-npm start
-```
+Due to the lack of api, we can't do the following:
 
-Or on Windows:
-
-```cmd
-set CLIENT_ID=YOUR_CLIENT_ID
-set CLIENT_SECRET=YOUR_CLIENT_SECRET
-set SERVER_PORT=4000
-npm start
-```
-
-The server will run on port 4000 by default (or the port specified in the SERVER_PORT environment variable).
-
-## MCP Tools
-
-The server provides the following MCP tools:
-
-
-### Projects
-
-Get all projects:
-
-```
-dida365_getProjects
-```
-
-Create a new project:
-
-```
-dida365_createProject
-```
-
-Parameters:
-- `name`: Project name
-- `color`: (Optional) Project color
-
-### Tasks
-
-Get all tasks:
-
-```
-dida365_getTasks
-```
-
-Parameters:
-- `projectId`: (Optional) Get tasks from a specific project
-
-Create a new task:
-
-```
-dida365_createTask
-```
-
-Parameters:
-- `title`: Task title
-- `content`: (Optional) Task content/description
-- `projectId`: (Optional) Project ID
-- `startDate`: (Optional) Start date in ISO format
-- `dueDate`: (Optional) Due date in ISO format
-- `priority`: (Optional) Priority level (0-5)
-- `reminders`: (Optional) Array of reminder times
-
-Update a task:
-
-```
-dida365_updateTask
-```
-
-Parameters:
-- `taskId`: Task ID to update
-- `title`: (Optional) New task title
-- `content`: (Optional) New task content
-- `projectId`: (Optional) New project ID
-- `startDate`: (Optional) New start date
-- `dueDate`: (Optional) New due date
-- `priority`: (Optional) New priority level
-- `status`: (Optional) Task status (0 for not completed, 2 for completed)
-- `reminders`: (Optional) New array of reminder times
-
-Delete a task:
-
-```
-dida365_deleteTask
-```
-
-Parameters:
-- `taskId`: Task ID to delete
-
-## Security Considerations
-
-- This server stores authentication tokens in memory. For production use, consider implementing a more secure token storage solution.
-- Always use HTTPS in production to protect user credentials.
-- The server does not implement rate limiting, which might be necessary to prevent API abuse.
-
-## License
-
-MIT 
+1. Get tasks from a specific project
+2. Update existing tasks in a specific project
+3. Delete tasks in a specific project
+4. Create new tasks in a specific project

@@ -10,9 +10,14 @@ import {dirname} from 'path';
 import { fileURLToPath } from 'url';
 import path from 'node:path';
 import fs from 'fs';
+import dotenv from 'dotenv';
+
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
+dotenv.config({ path: path.join(__dirname, '../.env') });
 
 // Create a custom logger that writes to file instead of console
 const logFilePath = path.join(__dirname, 'server.log');
@@ -77,7 +82,7 @@ const clientInfo = {
     scope: "tasks:read tasks:write",
 }
 
-let SEVER_PORT = parseInt(process.env.SERVER_PORT || '4000', 10);
+let SEVER_PORT = parseInt(process.env.PORT || '4000', 10);
    
    function initializeClientInfo() {
      if (!clientInfo.clientId || !clientInfo.clientSecret) {
@@ -96,29 +101,6 @@ let access = {
   expireAt: null
 };
 
-
-// server.tool('didaOauth', {},async() => {
-//   try {
-//     await getAuthorization();
-//     return {
-//       content: [{ type: "text", text: "Authorization successful:" + access.token  }]
-//     }
-//   } catch (error) {
-//     return {
-//       content: [{ type: "text", text: `Authorization failed: ${error.message}` }]
-//     }
-//   }
-// })
-
-// server.tool('login',{},async() => {
-//   const response = await axios.post('https://api.dida365.com/api/v2/user/signon?wc=true&remember=true', {
-//     password:"zx8368545",
-//     phone:"13751673721"
-//   })
-//   return {
-//     content: [{ type: "text", text: `Login successful: ${JSON.stringify(response.data)}` }]
-//   }
-// })
 
 function formatTime(time) {
   return time ? new Date(time).toISOString().replace('Z', '+0000') : null

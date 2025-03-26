@@ -1,7 +1,7 @@
 {
   "name": "my-mcp-server",
   "version": "1.0.0",
-  "description": "A simple MCP server using HTTP transport",
+  "description": "A simple MCP server for Dida365 (TickTick)",
   "main": "src/tick.js",
   "type": "module",
   "scripts": {
@@ -16,6 +16,7 @@
     "body-parser": "^2.1.0",
     "cheerio": "^1.0.0",
     "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
     "express": "^5.0.1",
     "http-proxy-middleware": "^3.0.3",
     "open": "^10.1.0",
