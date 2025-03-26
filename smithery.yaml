@@ -3,7 +3,13 @@ startCommand:
   type: stdio
   configSchema:
     # JSON Schema defining the configuration options for the MCP.
-    {}
+    type: object
+    properties:
+      token:
+        type: string
+        description: "The token for the MCP"
+    required:
+      - token
   commandFunction:
     # A function that produces the CLI command to start the MCP on stdio.
     |-
@@ -12,4 +18,7 @@ startCommand:
       "args": [
         "src/tick.js"
       ],
+      "env": {
+        "TOKEN": config.token
+      }
     })

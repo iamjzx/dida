@@ -10,14 +10,14 @@ import {dirname} from 'path';
 import { fileURLToPath } from 'url';
 import path from 'node:path';
 import fs from 'fs';
-import dotenv from 'dotenv';
+// import dotenv from 'dotenv';
 
 
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-dotenv.config({ path: path.join(__dirname, '../.env') });
+// dotenv.config({ path: path.join(__dirname, '../.env') });
 
 // Create a custom logger that writes to file instead of console
 const logFilePath = path.join(__dirname, 'server.log');
@@ -82,24 +82,27 @@ const clientInfo = {
     scope: "tasks:read tasks:write",
 }
 
+
+// 存储访问令牌
+let access = {
+  token: process.env.TOKEN,
+  expireAt: null
+};
+
 let SEVER_PORT = parseInt(process.env.PORT || '4000', 10);
    
    function initializeClientInfo() {
-     if (!clientInfo.clientId || !clientInfo.clientSecret) {
-       logger.error('CLIENT_ID or CLIENT_SECRET is not set');
+     if (!access.token) {
+       logger.error('TOKEN is not set');
        process.exit(1);
      }
-     clientInfo.redirectUri = `http://localhost:${SEVER_PORT}/oauth/callback`;
+    //  clientInfo.redirectUri = `http://localhost:${SEVER_PORT}/oauth/callback`;
    }
    
    // 调用初始化函数
    initializeClientInfo();
 
-// 存储访问令牌
-let access = {
-  token: null,
-  expireAt: null
-};
+
 
 
 function formatTime(time) {
@@ -135,7 +138,7 @@ server.tool('createTask',{
     completedTime: z.string().optional(),
    })).optional(),
   },async({title, content, dueDate, desc, isAllDay, startDate, timeZone, reminders, repeatFlag, priority, sortOrder, items}) => {
-  await getAuthorization();
+  //await getAuthorization();
   try {
     const response = await axios.post(`${baseUrl}/task`, {
       title,
@@ -170,7 +173,7 @@ server.tool('createTask',{
 
 //获取用户project
 server.tool('getUserProject', {}, async() => {
-  await getAuthorization();
+  //await getAuthorization();
   try {
     const response = await axios.get(`${baseUrl}/project`, {
       headers: {
@@ -191,7 +194,7 @@ server.tool('getUserProject', {}, async() => {
 
 //根据id查询project
 server.tool('getProjectById', {id: z.string()}, async({id}) => {
-  await getAuthorization();
+  //await getAuthorization();
   try {
     const response = await axios.get(`${baseUrl}/project/${id}`, {
       headers: {
@@ -212,7 +215,7 @@ server.tool('getProjectById', {id: z.string()}, async({id}) => {
 
 //根据project ID 查询 project 和 task 数据
 server.tool('getProjectWithData', {id: z.string()}, async({id}) => {
-  await getAuthorization();
+  //await getAuthorization();
   try {
     const response = await axios.get(`${baseUrl}/project/${id}/data`, {
       headers: {
@@ -233,7 +236,7 @@ server.tool('getProjectWithData', {id: z.string()}, async({id}) => {
 
 //根据project ID 和 task ID查询 task
 server.tool('getTaskById', {projectId: z.string(), taskId: z.string()}, async({id}) => {
-  await getAuthorization();
+  //await getAuthorization();
   try {
     const response = await axios.get(`${baseUrl}/project/${projectId}/task/${taskId}`, {
       headers: {
@@ -284,7 +287,7 @@ server.tool('updateTask', {
     completedTime: z.string().optional(),
    })).optional(),
 }, async({ title, content, dueDate,taskId, id, projectId, desc, isAllDay, startDate, timeZone, reminders, repeatFlag, priority, sortOrder, items}) => {
-  await getAuthorization();
+  //await getAuthorization();
   try {
     const response = await axios.post(`${baseUrl}/task/${taskId}`, {
       title,
@@ -320,7 +323,7 @@ server.tool('updateTask', {
 
 //完成任务
 server.tool('completeTask', {projectId: z.string(), taskId: z.string()}, async({projectId, taskId}) => {  
-  await getAuthorization();
+  //await getAuthorization();
   try {
     const response = await axios.post(`${baseUrl}/project/${projectId}/task/${taskId}/complete`, {
       headers: {
@@ -341,7 +344,7 @@ server.tool('completeTask', {projectId: z.string(), taskId: z.string()}, async({
 
 //删除任务
 server.tool('deleteTask', {projectId: z.string(), taskId: z.string()}, async({projectId, taskId}) => {
-  await getAuthorization();
+  //await getAuthorization();
   try {
     const response = await axios.delete(`${baseUrl}/project/${projectId}/task/${taskId}`, {
       headers: {
@@ -362,7 +365,7 @@ server.tool('deleteTask', {projectId: z.string(), taskId: z.string()}, async({pr
 
 //创建project
 server.tool('createProject', {name: z.string(), color: z.string().optional(), sortOrder: z.number().optional(), kind: z.string().optional(), viewMode: z.string().optional()}, async({name, color, sortOrder, kind, viewMode}) => {
-  await getAuthorization();
+  //await getAuthorization();
   try {
     const response = await axios.post(`${baseUrl}/project`, {
       name,
@@ -389,7 +392,7 @@ server.tool('createProject', {name: z.string(), color: z.string().optional(), so
 
 //更新project 
 server.tool('updateProject', {projectId: z.string().optional(), name: z.string().optional(), color: z.string().optional(), kind: z.string().optional(), viewMode: z.string().optional()}, async({projectId, name, color, kind, viewMode}) => {
-  await getAuthorization();
+  //await getAuthorization();
   try {
     const response = await axios.put(`${baseUrl}/project/${projectId}`, {
       name,
