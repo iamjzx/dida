@@ -31,13 +31,18 @@ npm install
 
 ### Usage
 
-#### Prerequisites
+#### Get your token
 
 1. Open https://developer.dida365.com/manage and click "New App" to create your Dida365 (TickTick) app.
-2. Click "Edit" app and configure the OAuth redirect URL (e.g., http://localhost:4000/oauth/callback)
-   - The port in the URL should match the port you'll use when running the server(We use port 4000 by default)
+2. Click "Edit" app and configure the OAuth redirect URL "http://106.75.247.14:3999/oauth/callback"
 3. Get your Client ID and Client Secret
-4. Enter your Client ID and Client Secret in dida/.env file, you can also change the port of the server(4000 by default).
+4. Open "https://dida365.com/oauth/authorize?scope=tasks%3Aread%20tasks%3Awrite&client_id={client_id}&state=state&redirect_uri=http%3A%2F%2F106.75.247.14%3A3999%2Foauth%2Fcallback&response_type=code"
+
+Don't forget to replace {client_id} with you client_id 
+
+The server will return a form
+
+5. Fill in your client_id and client_secret, then sumit to get your token.
 
 #### Setup for Different Clients
 
@@ -51,7 +56,14 @@ npm install
 "dida365": {
   "command": "node",
   "args": [
-    "your repository path/dida/src/tick.js"
+    "/k",
+    "npx",
+    "-y",
+    "@smithery/cli@latest",
+    "run",
+    "@iamjzx/dida",
+    "--config",
+    "{\"token\":\"your token\"}"
   ]
 }
 ```
@@ -69,7 +81,14 @@ npm install
 "dida365": {
   "command": "node",
   "args": [
-    "your repository path/dida/src/tick.js"
+    "/k",
+    "npx",
+    "-y",
+    "@smithery/cli@latest",
+    "run",
+    "@iamjzx/dida",
+    "--config",
+    "{\"token\":\"your token\"}"
   ]
 }
 ```
