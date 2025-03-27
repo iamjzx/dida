@@ -54,9 +54,9 @@ The server will return a form
 
 ```json
 "dida365": {
-  "command": "node",
+  "command": "cmd",
   "args": [
-    "/k",
+    "/c",
     "npx",
     "-y",
     "@smithery/cli@latest",
@@ -79,9 +79,9 @@ The server will return a form
 
 ```json
 "dida365": {
-  "command": "node",
+  "command": "cmd",
   "args": [
-    "/k",
+    "/c",
     "npx",
     "-y",
     "@smithery/cli@latest",
