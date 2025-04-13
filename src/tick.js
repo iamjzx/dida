@@ -11,6 +11,7 @@ import fs from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+const baseUrl = 'https://dida365.com/open/v1';
 
 
 // Create a custom logger that writes to file instead of console
